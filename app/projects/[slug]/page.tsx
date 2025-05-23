@@ -4,19 +4,22 @@ import { projects } from "@/lib/projects";
 
 export const dynamicParams = false;
 
-type Props = {
+// ✅ Typage correct pour les pages dynamiques
+interface ProjectDetailPageProps {
   params: {
     slug: string;
   };
-};
+}
 
+// ✅ Fonction statique pour la génération des pages
 export function generateStaticParams() {
   return projects.map((project) => ({
     slug: project.slug,
   }));
 }
 
-export default function ProjectDetailPage({ params }: Props) {
+// ✅ Composant principal avec typage conforme
+export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
   const { slug } = params;
 
   const project = projects.find((p) => p.slug === slug);
