@@ -1,7 +1,6 @@
 import "@/globals.css";
 import type { Metadata } from "next";
 import { Sora } from "next/font/google";
-
 import Header from "@/components/Header";
 
 const sora = Sora({
@@ -10,8 +9,30 @@ const sora = Sora({
 });
 
 export const metadata: Metadata = {
-  title: "CleanCodeLab",
-  description: "Développeur web freelance – sur-mesure & efficace.",
+  title: {
+    default: "CleanCodeLab",
+    template: "%s | CleanCodeLab",
+  },
+  description:
+    "Développeur web freelance spécialisé dans la création de sites rapides, modernes et optimisés SEO.",
+  icons: {
+    icon: "/favicon.ico", // classique
+    shortcut: "/favicon-96x96.png", // icône raccourci (optionnel mais why not)
+    apple: "/apple-touch-icon.png", // pour iOS
+    other: [
+      {
+        rel: "icon",
+        url: "/web-app-manifest-192x192.png",
+        type: "image/png",
+      },
+      {
+        rel: "icon",
+        url: "/web-app-manifest-512x512.png",
+        type: "image/png",
+      },
+    ],
+  },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({

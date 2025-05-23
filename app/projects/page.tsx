@@ -1,18 +1,14 @@
-import Head from "next/head";
+import ProjectList from "@/components/ProjectList";
+import { projects } from "@/lib/projects";
 
 export default function ProjectsPage() {
   return (
-    <>
-      <Head>
-        <title>Projets réalisés | CleanCodeLab</title>
-        <meta
-          name="description"
-          content="Découvrez mes projets web : sites vitrines, e-commerce, applications sur-mesure réalisés pour PME et indépendants."
-        />
-      </Head>
+    <main className="bg-white py-20 px-6 max-w-7xl mx-auto">
+      <h1 className="text-4xl font-bold text-center text-zinc-900 mb-12">
+        Mes projets
+      </h1>
 
-      {/* Ton ancien contenu */}
-      <div>Projets</div>
-    </>
+      <ProjectList projects={projects} />
+    </main>
   );
 }
