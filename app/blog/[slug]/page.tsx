@@ -5,19 +5,24 @@ import type { Metadata } from "next";
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
-type Props = {
+// ✅ Types bien définis
+interface BlogPageProps {
   params: {
     slug: string;
   };
-};
+}
 
-export async function generateStaticParams() {
+// ✅ Paramètres statiques générés correctement
+export function generateStaticParams() {
   return blogPosts.map((post) => ({
     slug: post.slug,
   }));
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+// ✅ Metadata conforme à Next.js
+export async function generateMetadata({
+  params,
+}: BlogPageProps): Promise<Metadata> {
   const article = blogPosts.find((post) => post.slug === params.slug);
 
   if (!article) {
@@ -45,7 +50,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function ArticlePage({ params }: Props) {
+// ✅ Composant de page conforme
+export default function ArticlePage({ params }: BlogPageProps) {
   const { slug } = params;
 
   const article = blogPosts.find((post) => post.slug === slug);
@@ -55,7 +61,9 @@ export default async function ArticlePage({ params }: Props) {
   return (
     <main className="max-w-3xl mx-auto px-6 py-20">
       <article className="prose prose-lg prose-zinc dark:prose-invert">
-        <h1 className="text-4xl font-bold text-zinc-900 mb-4">{article.title}</h1>
+        <h1 className="text-4xl font-bold text-zinc-900 mb-4">
+          {article.title}
+        </h1>
 
         <p className="text-zinc-500 mb-2">
           {new Date(article.date).toLocaleDateString("fr-FR", {
