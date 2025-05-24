@@ -2,27 +2,21 @@ import { notFound } from "next/navigation";
 import { blogPosts } from "@/lib/blog";
 import type { Metadata } from "next";
 
+// ✅ Active le SSG
 export const dynamic = "force-static";
 export const dynamicParams = false;
 
-// ✅ Types bien définis
-interface BlogPageProps {
-  params: {
-    slug: string;
-  };
-}
-
-// ✅ Paramètres statiques générés correctement
-export function generateStaticParams() {
+// ✅ Génère les routes statiques à build-time
+export async function generateStaticParams() {
   return blogPosts.map((post) => ({
     slug: post.slug,
   }));
 }
 
-// ✅ Metadata conforme à Next.js
-export async function generateMetadata({
-  params,
-}: BlogPageProps): Promise<Metadata> {
+// ✅ Génère les balises <head> dynamiquement
+export function generateMetadata(
+  { params }: { params: { slug: string } }
+): Metadata {
   const article = blogPosts.find((post) => post.slug === params.slug);
 
   if (!article) {
@@ -50,11 +44,14 @@ export async function generateMetadata({
   };
 }
 
-// ✅ Composant de page conforme
-export default function ArticlePage({ params }: BlogPageProps) {
-  const { slug } = params;
 
-  const article = blogPosts.find((post) => post.slug === slug);
+// ✅ Affichage de l’article
+export default function ArticlePage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const article = blogPosts.find((post) => post.slug === params.slug);
 
   if (!article) return notFound();
 
