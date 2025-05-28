@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { blogPosts } from "@/lib/blog";
 import type { Metadata } from "next";
+import { PageProps } from "types/PageProps";
 
 // ✅ Active le SSG
 export const dynamic = "force-static";
@@ -14,10 +15,14 @@ export async function generateStaticParams() {
 }
 
 // ✅ Génère les balises <head> dynamiquement
-export function generateMetadata(
-  { params }: { params: { slug: string } }
-): Metadata {
-  const article = blogPosts.find((post) => post.slug === params.slug);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
+  const article = blogPosts.find((post) => post.slug === slug);
 
   if (!article) {
     return {
@@ -43,15 +48,10 @@ export function generateMetadata(
     keywords: article.keywords,
   };
 }
-
-
 // ✅ Affichage de l’article
-export default function ArticlePage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const article = blogPosts.find((post) => post.slug === params.slug);
+export default async function ArticlePage({ params }: PageProps) {
+  const { slug } = await params;
+  const article = blogPosts.find((post) => post.slug === slug);
 
   if (!article) return notFound();
 

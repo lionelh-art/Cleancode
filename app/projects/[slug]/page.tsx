@@ -1,15 +1,16 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { projects } from "@/lib/projects";
+import { PageProps } from "types/PageProps";
 
 export const dynamicParams = false;
 
 // ✅ Typage correct pour les pages dynamiques
-interface ProjectDetailPageProps {
-  params: {
-    slug: string;
-  };
-}
+// interface ProjectDetailPageProps {
+//   params: {
+//     slug: string;
+//   };
+// }
 
 // ✅ Fonction statique pour la génération des pages
 export function generateStaticParams() {
@@ -17,10 +18,10 @@ export function generateStaticParams() {
     slug: project.slug,
   }));
 }
-
+export type paramsType = Promise<{ slug: string }>;
 // ✅ Composant principal avec typage conforme
-export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
-  const { slug } = params;
+export default async function ProjectDetailPage({ params }: PageProps) {
+  const { slug } = await params;
 
   const project = projects.find((p) => p.slug === slug);
 
